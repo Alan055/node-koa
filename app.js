@@ -1,20 +1,11 @@
-var app = require('koa')()
+var Koa = require('koa')
   , logger = require('koa-logger')
   , json = require('koa-json')
   , views = require('koa-views')
   , onerror = require('koa-onerror');
-
-var index = require('./routes/index');
-var users = require('./routes/users');
+let app = new Koa()
 
 const config = require('./config/config') // 链接配置
-const session = require('koa-session') // 缓存
-const redisStore = require('koa-session-redis')
-
-const index = require('./routes/index')
-const reg = require('./routes/reg')
-const login = require('./routes/login')
-const logout = require('./routes/logout')
 
 // error handler
 onerror(app);
@@ -25,49 +16,45 @@ app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'))
 
-app.use(views('views', {
-	root: __dirname + '/views',
-	default: 'jade' // 这个是koa2 语言 jade.js
-}));
-
-
+// 这个是拦截器
 app.use(async (ctx, next)=>{
+	// next()之前  是拿到接口响应之后  还没开始操作
   const start = new Date;
   await next()
-  const ms = new Date - start;
-  console.log('%s %s - %s', this.method, this.url, ms);
+	// next()之后  是通过路由操作结束之后  可以拿到即将返回的数据
+  console.log('%s %s 处理时间：%s'+'ms', ctx.method, ctx.url,  new Date - start); // 这里是检测每次接口处理所需要花费的时间
 });
 
+// 设置session缓存
+const session = require('koa-session') // 缓存
+const RedisStore = require('koa2-session-redis') // 一个redis的仓库
 app.keys = ['Porschev'];
 const redis_conf = {
-	key: 'Porschev',
-	maxAge: config.REDIS.maxAge,
-	overwrite: true,
-	httpOnly: true,
-	rolling: false,
-	sign: true,
+	key: 'Porschev', // cookie key
+	maxAge: config.REDIS.maxAge, // 最大的缓存时间
+	overwrite: true, // 是否可以重写
+	httpOnly: true, //
+	rolling: false, // 强制在每个响应上设置会话标识符cookie 到期时间为maxAge  即是否每次都刷新cookie
+	sign: true, // 是否使用签名
 	store: new RedisStore({
 		host: config.REDIS.host,
 		port: config.REDIS.port,
-		password: config.REDIS.password
+		password: config.REDIS.password,
 	})
 };
+app.use(session(redis_conf, app)); // 第一个写后台的童鞋可能不明白redis和session 看config
 
-app.use(session(redis_conf, app));
-
-// routes definition
-app.use(index.routes(), index.allowedMethods());
-app.use(reg.routes(), reg.allowedMethods());
-app.use(login.routes(), login.allowedMethods());
-app.use(logout.routes(), logout.allowedMethods());
+// 路由配置
+const router = require('./routes/index')
+app.use(router.routes(),router.allowedMethods()) // 全部一起配置  启动路由
 
 // error-handling
-app.on('error', (err, ctx) => {
+app.on('error', (err, ctx) => { // 服务报错的情况下
   console.error('server error', err, ctx)
 });
 
-app.listen(config.SERVER_atPORT, () => {
+app.listen(config.SERVER_PORT, () => { // 启动服务 监听端口
 	console.log(`Starting  port ${config.SERVER_PORT}!`)
 });
 
-module.exports = app;
+module.exports = app; // 这个感觉根本不需要

@@ -38,11 +38,16 @@ const userinfo = {
 	},
 	// 登录
 	async login(ctx){
-		let form = ctx.request.body // 拿到请求主体
+		let form = ctx.request[ctx.method == 'GET' ? 'query': 'body'] // 拿到请求主体
 		// 入参
 		const args = {
 			username: form.username,
 			password: form.password,
+		}
+		// 返回结果
+		let result = {
+			code: retCode.Success,
+			data:null
 		}
 		// 验证是否为空
 		if (!args.username || !args.password){
@@ -50,8 +55,8 @@ const userinfo = {
 			return result
 		}
 		// 根据用户名是否存在
-		let  userResult = await usermodel.getByUserName(args)
-		if(userNumResult.length == 0){ // 说明该账号未注册
+		let userResult = await usermodel.getByUserName(args)
+		if(userResult.length == 0){ // 说明该账号未注册
 			result.code = retCode.UserNotExist
 			return result
 		}
@@ -60,7 +65,7 @@ const userinfo = {
 			result.code = retCode.UsernameOrPasswordError
 			return result
 		}
-		ctx.session = {id: userResult[0].id} // 将用户的id存在session中 保持一段时间登录
+		ctx.session.id = userResult[0].id // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
 		return result
 	}
 }

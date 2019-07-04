@@ -1,5 +1,5 @@
-const cofig = require('./../../config/config')
 const mysql = require('mysql')
+const config = require('./../../config/config')
 const pool = mysql.createPool(config.MYSQL)
 
 let query = function (sql, args) {
