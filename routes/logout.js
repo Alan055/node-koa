@@ -1,22 +1,13 @@
-const router = require('koa-router')()
+// 注销路由
 const userbll = require('./../pub/bll/userinfo')
-const retCode = require('./../pub/utils/retcode')
+const getPost = require('./../pub/utils/common').getPost
 
-router.prefix('/logout')
+async function fn(ctx, next) {
+	let result = userbll.logout(ctx)
+	ctx.body = result
+}
 
-router.get('/', async (ctx, next)=>{
-	await ctx.render('logout', {})
-})
-
-router.post('/', async (ctx, next) => {
-
-	ctx.session = null;
-
-	let result = {
-		code: retCode.Success,
-		data: null
-	}
-	ctx.body = result;
-})
-
-module.exports = router
+module.exports = {
+	routerFn: getPost,
+	fn: fn
+}

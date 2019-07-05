@@ -1,9 +1,9 @@
-// 登录路由
-const userbll = require('./../pub/bll/userinfo')
+// 爬虫查询路由
+const reptile = require('./../pub/bll/reptile')
 const getPost = require('./../pub/utils/common').getPost
 
 async function fn(ctx, next) {
-	let result = await userbll.login(ctx)
+	let result = await reptile.find(ctx)
 	ctx.body = result
 }
 

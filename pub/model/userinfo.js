@@ -18,7 +18,7 @@ const userinfo = {
 		return result
 	},
 	// 根据username得到数量
-	async getCountByUserName(arg){
+	async getCountByUserName(args){
 		let sql = 'select count(1) as username from userlist where username=?'
 		let params = [args.username]
 		let result = await mysqlHelper.query(sql, params)

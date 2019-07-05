@@ -1,9 +1,9 @@
-// 登录路由
-const userbll = require('./../pub/bll/userinfo')
+// 电影路由
+const movieBill = require('./../pub/bll/movie')
 const getPost = require('./../pub/utils/common').getPost
 
 async function fn(ctx, next) {
-	let result = await userbll.login(ctx)
+	let result = await movieBill.find(ctx)
 	ctx.body = result
 }
 

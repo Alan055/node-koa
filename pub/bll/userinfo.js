@@ -1,12 +1,12 @@
 // 业务逻辑  登录、注册
 
 const usermodel = require('./../model/userinfo')
-const retCode = require('./../utils/retcode')
+const retCode = require('./../utils/retcode').retCode
 
 const userinfo = {
 	// 注册
-	async register(ctx){
-		let form = ctx.request.body // 拿到请求主体
+	async register(ctx) {
+		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
 		// 入参
 		const args = {
 			username: form.username,
@@ -15,30 +15,34 @@ const userinfo = {
 		// 返回结果
 		let result = {
 			code: retCode.Success,
-			data:null
+			data: false
 		}
 		// 验证是否为空
-		if (!args.username || !args.password){
+		if (!args.username || !args.password) {
 			result.code = retCode.ArgsError // 参数错误
 			return result
 		}
 		// 根据用户名得到用户数量
-		let  userNumResult = await usermodel.getCountByUserName(args)
-		if(userNumResult[0].username > 0){ // 说明该账号已被注册咯
+		let userNumResult = await usermodel.getCountByUserName(args)
+		if (userNumResult[0].username > 0) { // 说明该账号已被注册咯
 			result.code = retCode.UserExisted
 			return result
 		}
 		// 插入注册表
 		let userResult = await usermodel.add(args)
-		if(userResult.insertId <= 0 ){ // 说明没有写入到数据库中
+		if (userResult.insertId <= 0) { // 说明没有写入到数据库中
 			result.code = retCode.Fail
 			return result // 其实这个是多余的
+		}
+		result.data = {
+			userId: userResult.insertId,
+			userName: args.username
 		}
 		return result
 	},
 	// 登录
-	async login(ctx){
-		let form = ctx.request[ctx.method == 'GET' ? 'query': 'body'] // 拿到请求主体
+	async login(ctx) {
+		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
 		// 入参
 		const args = {
 			username: form.username,
@@ -47,26 +51,35 @@ const userinfo = {
 		// 返回结果
 		let result = {
 			code: retCode.Success,
-			data:null
+			data: false
 		}
 		// 验证是否为空
-		if (!args.username || !args.password){
+		if (!args.username || !args.password) {
 			result.code = retCode.ArgsError // 参数错误
 			return result
 		}
 		// 根据用户名是否存在
 		let userResult = await usermodel.getByUserName(args)
-		if(userResult.length == 0){ // 说明该账号未注册
+		if (userResult.length == 0) { // 说明该账号未注册
 			result.code = retCode.UserNotExist
 			return result
 		}
 		// 用户名或者密码错误
-		if(userResult[0].username != args.username || userResult[0].password != args.password){
+		if (userResult[0].username != args.username || userResult[0].password != args.password) {
 			result.code = retCode.UsernameOrPasswordError
 			return result
 		}
-		ctx.session.id = userResult[0].id // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
+		// 这里解释一下  这里的session是根据客户端浏览器的不同而唯一的  redis会自动生成一个key值  这个key在同一个浏览器上是相同的 所以不同客户端就不会造成覆盖和误删
+		ctx.session = {id: userResult[0].Id} // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
+
+		result.data = true // 成功的时候  data为true
 		return result
+	},
+	// 注销 // 这个是同步的
+	logout(ctx) {
+		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
+		ctx.session = null // 删除缓存
+		return {code: retCode.Success, data: true,}
 	}
 }
 
