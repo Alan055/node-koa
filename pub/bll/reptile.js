@@ -2,10 +2,13 @@
 
 const reptileModel = require('./../model/reptile')
 const retCode = require('./../utils/retcode').retCode
+const getForm = require('./../utils/common').getForm
 
 const reptile = {
 	async find(ctx){
-		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
+		let form = getForm(ctx) // 拿到请求主体
+		console.log(form)
+		console.log(ctx)
 		// 返回结果
 		let result = {
 			code: retCode.Success,

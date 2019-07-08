@@ -1,3 +1,4 @@
+const multiparty = require('koa2-multiparty')
 // 公共函数 很多地方都可以用的到的
 
 // router中  某个接口同时允许get和post两种方式 的函数
@@ -13,7 +14,14 @@ function getOnly(router, path, callback){ // 一般是都支持滴 除了获取�
 function postOnly(router, path, callback){ // 一般是都支持滴  除了获取文件 只能用get
 	router.post(path, callback)
 }
-
+// router中  文件上传模式  只支持post
+function postOnlyFile(router, path, callback){ // 一般是都支持滴  除了获取文件 只能用get
+	router.post(path, multiparty(), callback)
+}
+// 根据get和post返回对应的请求主体参数
+function getForm(ctx){
+	return ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
+}
 
 
 
@@ -21,4 +29,6 @@ module.exports = {
 	getPost, // router中  某个接口同时允许get和post两种方式 的函数
 	getOnly, // router中  某个接口只允许get方式 的函数
 	postOnly, // router中  某个接口只允许post方式 的函数
+	postOnlyFile, // router中  某件上传模式  只支持post
+	getForm, // 根据get和post返回对应的请求主体参数
 }

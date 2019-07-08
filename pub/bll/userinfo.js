@@ -2,11 +2,12 @@
 
 const usermodel = require('./../model/userinfo')
 const retCode = require('./../utils/retcode').retCode
+const getForm = require('./../utils/common').getForm
 
 const userinfo = {
 	// 注册
 	async register(ctx) {
-		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
+		let form = getForm(ctx) // 拿到请求主体
 		// 入参
 		const args = {
 			username: form.username,
@@ -42,7 +43,7 @@ const userinfo = {
 	},
 	// 登录
 	async login(ctx) {
-		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
+		let form = getForm(ctx) // 拿到请求主体
 		// 入参
 		const args = {
 			username: form.username,
@@ -77,7 +78,7 @@ const userinfo = {
 	},
 	// 注销 // 这个是同步的
 	logout(ctx) {
-		let form = ctx.request[ctx.method == 'GET' ? 'query' : 'body'] // 拿到请求主体
+		let form = getForm(ctx) // 拿到请求主体
 		ctx.session = null // 删除缓存
 		return {code: retCode.Success, data: true,}
 	}

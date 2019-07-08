@@ -1,6 +1,6 @@
 // 上传路由
 const uploadbll = require('./../pub/bll/upload')
-const getPost = require('./../pub/utils/common').getPost
+const postOnlyFile = require('./../pub/utils/common').postOnlyFile
 
 async function fn(ctx, next) {
 	let result = await uploadbll.saveFile(ctx)
@@ -8,6 +8,6 @@ async function fn(ctx, next) {
 }
 
 module.exports = {
-	routerFn: getPost,
+	routerFn: postOnlyFile,
 	fn: fn
 }

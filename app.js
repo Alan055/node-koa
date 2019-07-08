@@ -13,13 +13,13 @@ onerror(app);
 
 
 // global middlewares 全局中间件
-// app.use(require('koa-bodyparser')({enableType: ['json', 'form', 'text']}));
-app.use(koaBody({
-	multipart: true,
-	formidable: {
-		maxFileSize: 500*1024*1024 // 设置上传文件大小最大限制，默认2M
-	}
-}));
+app.use(require('koa-bodyparser')({enableType: ['json', 'form', 'text']}));
+// app.use(koaBody({
+// 	multipart: true,
+// 	formidable: {
+// 		maxFileSize: 500*1024*1024 // 设置上传文件大小最大限制，默认2M
+// 	}
+// }));
 app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'))
