@@ -8,8 +8,9 @@ const routerList = [
 	'./register', // 注册路由
 	'./logout',  // 注销路由
 	'./reptile',  // 爬虫路由
-	'./movie',  // 爬虫路由
-	'./movieType',  // 爬虫路由
+	'./movie',  // 电影列表路由
+	'./movieType',  // 电影类型路由
+	'./upload',  // 上传路由
 ]
 
 for (let path of routerList) {

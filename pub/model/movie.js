@@ -18,20 +18,24 @@ const reptile = {
 			total: result[1][0].total
 		}
 	},
+	// 查询每一个分类的总数  和 分类表里面的总数
 	async type(args){
 		let sql = 'select * from movie_type;' // 查总数
 		let result = await mysqlHelper.query(sql, [])
 
 		// 查分类总数
-		let sql = "SELECT "
-		for(let val of typeList){
-			sql += `SUM(type='${val.type_name}') AS '${val.id}',`
+		let sql0 = "SELECT "
+		for(let val of result){
+			sql0 += `SUM(type='${val.type_name}') AS '${val.id}',`
 		}
-		sql = sql.substr(0,sql.length-1)
-		sql += ' FROM movie_data;'
+		sql0 = sql0.substr(0,sql0.length-1) // 去掉末尾逗号
+		sql0 += ' FROM movie_data;'
+		result0 = await mysqlHelper.query(sql0, [])
 
-
-		return result
+		return {
+			typeList: result,
+			totalList : result0[0]
+		}
 	}
 }
 

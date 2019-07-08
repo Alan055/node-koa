@@ -2,7 +2,8 @@ var Koa = require('koa')
   , logger = require('koa-logger')
   , json = require('koa-json')
   , views = require('koa-views')
-  , onerror = require('koa-onerror');
+  , onerror = require('koa-onerror')
+  , koaBody = require('koa-body');
 let app = new Koa()
 
 const config = require('./config/config') // 链接配置
@@ -10,11 +11,19 @@ const config = require('./config/config') // 链接配置
 // error handler
 onerror(app);
 
+
 // global middlewares 全局中间件
-app.use(require('koa-bodyparser')({enableType: ['json', 'form', 'text']}));
+// app.use(require('koa-bodyparser')({enableType: ['json', 'form', 'text']}));
+app.use(koaBody({
+	multipart: true,
+	formidable: {
+		maxFileSize: 500*1024*1024 // 设置上传文件大小最大限制，默认2M
+	}
+}));
 app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'))
+
 
 const message = require('./pub/utils/retcode').message
 // 这个是拦截器
