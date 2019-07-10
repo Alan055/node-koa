@@ -8,6 +8,7 @@ const  retCode = {
 	UserExisted: 10, // 用户已经存在
 	UsernameOrPasswordError: 11, // 用户名或者密码错误
 	UserNotExist: 12, // 用户不存在
+	UnzipFail: 18, // 解压失败
 }
 const message = { // 映射的msg中文意思
 	[retCode.SessionExpired]: '登录信息已过期，请重新登录',
@@ -17,6 +18,7 @@ const message = { // 映射的msg中文意思
 	[retCode.UserExisted]: '用户已存在',
 	[retCode.UsernameOrPasswordError]: '用户名或密码错误',
 	[retCode.UserNotExist]: '用户不存在',
+	[retCode.UnzipFail]: '解压失败',
 
 }
 
