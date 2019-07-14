@@ -17,6 +17,12 @@ const production = { // 生产
 		supportBigNumbers: true,
 		multipleStatements: true,
 		timezone: 'utc'
+	},
+	email: {
+		user: 'alan0555@qq.com',
+		password: 'hhazzkkgajykbhec',
+		host: 'smtp.qq.com',
+		ssl: true,
 	}
 }
 
@@ -47,7 +53,16 @@ const development = { // 开发
 		supportBigNumbers: true,
 		multipleStatements: true,
 		timezone: 'utc'
-	}
+	},
+	email: {
+		user: 'alan0555@qq.com',
+		password: 'hhazzkkgajykbhec',
+		host: 'smtp.qq.com',
+		ssl: true,
+	},
+	www: 'http://localhost:8080', // 前端域名
+	expireTime: 5, // 验证码过期时间  分钟
+
 }
 
 const config = development // 选择开发/生产模式

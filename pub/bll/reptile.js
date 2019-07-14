@@ -7,8 +7,6 @@ const getForm = require('./../utils/common').getForm
 const reptile = {
 	async find(ctx){
 		let form = getForm(ctx) // 拿到请求主体
-		console.log(form)
-		console.log(ctx)
 		// 返回结果
 		let result = {
 			code: retCode.Success,

@@ -65,7 +65,7 @@ app.on('error', (err, ctx) => { // 服务报错的情况下
   console.error('server error', err, ctx)
 });
 
-app.listen(config.SERVER_PORT, () => { // 启动服务 监听端口
+app.listen(config.SERVER_PORT, '0.0.0.0' , () => { // 启动服务 监听端口
 	console.log(`Starting  port ${config.SERVER_PORT}!`)
 });
 

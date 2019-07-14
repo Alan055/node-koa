@@ -1,14 +1,11 @@
 // 业务逻辑  获取文件相关
 
-const uploadModel = require('./../model/upload')
 const retCode = require('./../utils/retcode').retCode
 const moment = require('moment')
 
 var fs = require('fs');
 var join = require('path').join; // 文件拼接链接  根据环境自动选择是 / or \
 const readline = require('readline');
-// let JSZIP = require('jszip')
-// let zip = new JSZIP()
 let unzip = require('unzip')
 const calc = require('../../run') // 计算函数
 
