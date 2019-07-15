@@ -11,6 +11,9 @@ const routerList = [
 	'./movie',  // 电影列表路由
 	'./movieType',  // 电影类型路由
 	'./upload',  // 上传路由
+	'./forgetPassword',  // 忘记密码路由
+	'./modifyPassword',  // 修改密码路由
+	'./statistical',  // 修改密码路由
 ]
 
 for (let path of routerList) {
