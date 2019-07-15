@@ -122,12 +122,12 @@ const userinfo = {
 			return result
 		}
 		// 这里解释一下  这里的session是根据客户端浏览器的不同而唯一的  redis会自动生成一个key值  这个key在同一个浏览器上是相同的 所以不同客户端就不会造成覆盖和误删
-		ctx.session = {id: userResult[0].id} // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
+		ctx.session = {id: userResult[0].id,username: userResult[0].username,email: userResult[0].email,permission:userResult[0].permission} // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
 		// ctx.session.id =  userResult[0].id // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
 		let res = userResult[0]
 		result.data = {
 			userId: res.id,
-			userName: res.username,
+			username: res.username,
 			email: res.email,
 			permission: res.permission
 		}

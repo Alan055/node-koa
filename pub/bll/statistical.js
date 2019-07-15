@@ -20,7 +20,6 @@ const reptile = {
 			code: retCode.Success,
 			data: null
 		}
-		console.log(ctx.session.id)
 		let setResult = await statisticalModel.setData({
 			ip: getClientIp(ctx.req),
 			user: ctx.session.id ? (await userModel.getByUserId(ctx.session.id))[0].username: '游客',
