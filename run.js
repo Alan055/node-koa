@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('io');
 const join = require('path').join; // 文件拼接链接  根据环境自动选择是 / or \
 const readline = require('readline');
 const rm = require('rimraf') // 删除一个文件或文件夹 不管是否为空都可以删除

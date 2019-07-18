@@ -15,6 +15,7 @@ const routerList = [
 	'./modifyPassword',  // 修改密码路由
 	'./statistical',  // 修改密码路由
 	'./pushMood',  // 心情墙添加路由
+	'./community',  // 社区墙查询路由
 ]
 
 for (let path of routerList) {
