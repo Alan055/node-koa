@@ -11,7 +11,6 @@ let query = function (sql, args) {
 					connection.release()
 				})
 			}
-
 		})
 	})
 }

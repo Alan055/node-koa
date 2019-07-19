@@ -3,7 +3,8 @@ var Koa = require('koa')
   , json = require('koa-json')
   , views = require('koa-views')
   , onerror = require('koa-onerror')
-  , koaBody = require('koa-body');
+  , koaBody = require('koa-body')
+  , join = require('path').join;
 let app = new Koa()
 
 const config = require('./config/config') // 链接配置
@@ -24,13 +25,18 @@ app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'))
 
+app.use(views(join(__dirname , 'views'), {
+	extension: 'ejs'
+	// map: {html: 'ejs' }
+}))
+
 
 const message = require('./pub/utils/retcode').message
 // 这个是拦截器
 app.use(async (ctx, next)=>{ // next()之前  是拿到接口响应之后  还没开始操作
   const start = new Date;
   await next() 	// next()之后  是通过路由操作结束之后  可以拿到即将返回的数据
-	ctx.body.msg = message[ctx.body.code] // 增加msg 中文消息提示
+	// !ctx.url.includes('helloworld') && (ctx.body.msg = message[ctx.body.code]) // 增加msg 中文消息提示
 	console.log('%s %s 处理时间：%s'+'ms', ctx.method, ctx.url,  new Date - start); // 这里是检测每次接口处理所需要花费的时间
 });
 

@@ -1,6 +1,6 @@
 // 爬虫查询路由
-const reptile = require('./../pub/bll/reptile')
-const getPost = require('./../pub/utils/common').getPost
+const reptile = require('../../pub/bll/reptile')
+const getPost = require('../../pub/utils/common').getPost
 
 async function fn(ctx, next) {
 	let result = await reptile.find(ctx)

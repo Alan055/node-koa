@@ -3,7 +3,7 @@
 const retCode = require('./../utils/retcode').retCode
 const moment = require('moment')
 
-var fs = require('io');
+var fs = require('fs');
 var join = require('path').join; // 文件拼接链接  根据环境自动选择是 / or \
 const readline = require('readline');
 let unzip = require('unzip')

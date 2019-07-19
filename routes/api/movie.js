@@ -1,6 +1,6 @@
 // 电影路由
-const movieBill = require('./../pub/bll/movie')
-const getPost = require('./../pub/utils/common').getPost
+const movieBill = require('../../pub/bll/movie')
+const getPost = require('../../pub/utils/common').getPost
 
 async function fn(ctx, next) {
 	let result = await movieBill.find(ctx)

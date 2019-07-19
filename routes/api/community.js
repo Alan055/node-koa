@@ -1,6 +1,6 @@
 // 电影路由
-const bill = require('./../pub/bll/community')
-const getPost = require('./../pub/utils/common').getPost
+const bill = require('../../pub/bll/community')
+const getPost = require('../../pub/utils/common').getPost
 
 async function fn(ctx, next) {
 	let result = await bill.searchCommunity(ctx)
