@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= title %></title>
+</head>
+<body>
+<p>EJS Welcome to <%= title %></p>
+
+<% for(let val of list){ %>
+<div>
+	<p><%= (val.label + val.value) %></p>
+</div>
+<%}%>
+
+{{each data}}
+<div>
+		<p >{{$value.label + $value.value}}</p>
+</div>
+{{/each}}
+
+
+
+<img src="/image/icon.jpg" alt="">
+
+</body>
+</html>
