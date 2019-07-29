@@ -81,9 +81,10 @@ const userinfo = {
 		// 插入成功  然后查询到那条数据
 		userResult = await usermodel.getByUserName(args)
 		// 注册后直接登录
-		ctx.session = {id: userResult[0].id} // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
+
+		ctx.session = userResult[0] // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
 		let res = userResult[0]
-		this.sendEmail(res,'welcome') // 发送邮件
+		// this.sendEmail(res,'welcome') // 发送邮件
 		result.data = {
 			userId: res.id,
 			userName: res.username,
@@ -136,7 +137,8 @@ const userinfo = {
 	// 注销 // 这个是同步的
 	logout(ctx) {
 		let form = getForm(ctx) // 拿到请求主体
-		ctx.session = null // 删除缓存
+		console.log(ctx.session)
+		ctx.session.username && (ctx.session = null) // 删除缓存
 		return {code: retCode.Success, data: true,}
 	},
 	// 找回密码  发送邮箱
@@ -252,7 +254,7 @@ const userinfo = {
 			subject: `来自Alan社区的邮件（${textList.title}）`
 		})
 	},
-	//
+	// ...
 }
 
 module.exports = userinfo

@@ -13,7 +13,6 @@ async function fn(ctx, next) {
 			{label: '这是ejs', value: '6'},
 			{label: '这是ejs', value: '7'},
 		] })
-
 }
 
 module.exports = {

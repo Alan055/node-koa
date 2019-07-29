@@ -26,7 +26,7 @@ app.use(logger());
 app.use(require('koa-static')(join(__dirname,'static'))) // 静态文件中间件 接口中获取静态资源不需要带static
 
 app.use(views(join(__dirname , './views'), {
-	extension: 'pug'
+	extension: 'ejs'
 	// map: {html: 'ejs' }
 }))
 
@@ -43,6 +43,7 @@ app.use(async (ctx, next)=>{ // next()之前  是拿到接口响应之后  还�
 // 设置session缓存
 const session = require('koa-session') // 缓存
 const RedisStore = require('koa2-session-redis') // 一个redis的仓库
+app.keys = 'alanKing'
 const redis_conf = {
 	key: 'Porschev', // cookie key
 	maxAge: config.REDIS.maxAge, // 最大的缓存时间
@@ -56,18 +57,20 @@ const redis_conf = {
 		password: config.REDIS.password,
 	})
 };
-app.use(session(redis_conf, app)); // 第一个写后台的童鞋可能不明白redis和session 看config
+app.use(session(redis_conf, app)); // 第一次写后台的童鞋可能不明白redis和session    看config
 
 // 路由配置
 const router = require('./routes/index')
 app.use(router.routes(),router.allowedMethods()) // 全部一起配置  启动路由
 
 // error-handling
-const getForm = require('./pub/utils/common').getForm
+const getForm = require('./pub/utils/common').getForm // 拿到请求的数据方法
 app.on('error', (err, ctx) => { // 服务报错的情况下
 	console.error('服务器报错，入参为：', getForm(ctx))
 	console.log(err)
 });
+
+// module.exports = app // 这个有热更新
 
 app.listen(config.SERVER_PORT, '0.0.0.0' , () => { // 启动服务 监听端口
 	console.log(`启动服务，监听端口号为： ${config.SERVER_PORT}`)
