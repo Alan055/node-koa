@@ -83,6 +83,7 @@ const userinfo = {
 		// 注册后直接登录
 
 		ctx.session = userResult[0] // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
+		ctx.cookies.set("username",userResult[0].username)
 		let res = userResult[0]
 		// this.sendEmail(res,'welcome') // 发送邮件
 		result.data = {

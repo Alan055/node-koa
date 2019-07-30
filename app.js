@@ -43,9 +43,9 @@ app.use(async (ctx, next)=>{ // next()之前  是拿到接口响应之后  还�
 // 设置session缓存
 const session = require('koa-session') // 缓存
 const RedisStore = require('koa2-session-redis') // 一个redis的仓库
-app.keys = 'alanKing'
+app.keys = ['alantest']
 const redis_conf = {
-	key: 'Porschev', // cookie key
+	key: 'session', // cookie key
 	maxAge: config.REDIS.maxAge, // 最大的缓存时间
 	overwrite: true, // 是否可以重写
 	httpOnly: true, //

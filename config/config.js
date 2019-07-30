@@ -47,8 +47,8 @@ const development = { // 开发
 		host: 'localhost',
 		port: '3306',
 		user: 'root',
-		// password: '123456', // 家里
-		password: 'a123456', // 公司
+		password: '123456', // 家里
+		// password: 'a123456', // 公司
 		database: 'alanSQL', // 指定使用这个数据库
 		supportBigNumbers: true,
 		multipleStatements: true,
