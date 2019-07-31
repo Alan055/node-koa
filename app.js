@@ -43,7 +43,7 @@ app.use(async (ctx, next)=>{ // next()之前  是拿到接口响应之后  还�
 // 设置session缓存
 const session = require('koa-session') // 缓存
 const RedisStore = require('koa2-session-redis') // 一个redis的仓库
-app.keys = ['alantest']
+app.keys = ['testalan'] // 这里面内容随便填，一般是随机字符串。作用是用来加密cookie  一定不能删除
 const redis_conf = {
 	key: 'session', // cookie key
 	maxAge: config.REDIS.maxAge, // 最大的缓存时间
@@ -70,8 +70,8 @@ app.on('error', (err, ctx) => { // 服务报错的情况下
 	console.log(err)
 });
 
-// module.exports = app // 这个有热更新
+module.exports = app // 这个有热更新
 
-app.listen(config.SERVER_PORT, '0.0.0.0' , () => { // 启动服务 监听端口
-	console.log(`启动服务，监听端口号为： ${config.SERVER_PORT}`)
-});
+// app.listen(config.SERVER_PORT, '0.0.0.0' , () => { // 启动服务 监听端口
+// 	console.log(`启动服务，监听端口号为： ${config.SERVER_PORT}`)
+// });

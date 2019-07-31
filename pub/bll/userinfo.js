@@ -83,9 +83,12 @@ const userinfo = {
 		// 注册后直接登录
 
 		ctx.session = userResult[0] // 将用户的id存在session中 保持一段时间登录  这里是在将用户id存在redis表中
-		ctx.cookies.set("username",userResult[0].username)
+		await ctx.cookies.set("username",userResult[0].username,{
+			maxAge: 1000*60,   // cookie有效时长
+		}) // 写入cookie
+		console.log(66666,ctx.cookies.get("username"))
 		let res = userResult[0]
-		// this.sendEmail(res,'welcome') // 发送邮件
+		this.sendEmail(res,'welcome') // 发送邮件
 		result.data = {
 			userId: res.id,
 			userName: res.username,
@@ -140,6 +143,7 @@ const userinfo = {
 		let form = getForm(ctx) // 拿到请求主体
 		console.log(ctx.session)
 		ctx.session.username && (ctx.session = null) // 删除缓存
+		ctx.cookies.set('username','',{expires:new Date(new Date().getTime()-1)})
 		return {code: retCode.Success, data: true,}
 	},
 	// 找回密码  发送邮箱
